@@ -1,0 +1,11 @@
+{
+  "name": "micro-saas-devop",
+  "version": "1.0.0",
+  "description": "Micro SaaS website for IT31023 Assessment 3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No test suite yet\" && exit 0"
+  },
+  "author": "Dulani Lakmali",
+  "license": "MIT"
+}
