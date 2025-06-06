@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/datepicker.min.js"></script>
+    <title>Document</title>
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script>
+      $(function () {
+        $("#includeHtml").load("consultant_navbar.html");
+      });
+    </script>
+  </head>
+  <body>
+    <div id="includeHtml"></div>
+
+    <div class="p-4 sm:ml-64">
+      <div
+        class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14"
+      >
+        <h5 class="text-xl font-bold dark:text-white">Add New Availability</h5>
+        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+
+        <form
+          onsubmit="event.preventDefault(); new_availability(
+              this.consultantId.value,
+              this.date.value,
+              this.time.value,
+              this.availability.value);"
+        >
+          <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div>
+              <label
+                for="consultantId"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Consultant ID</label
+              >
+              <input
+                type="text"
+                id="consultantId"
+                name="consultantId"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                disabled
+                required
+              />
+            </div>
+            <div>
+              <label
+                for="date"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Select Date</label
+              >
+              <div class="relative max-w-sm">
+                <div
+                  class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+                >
+                  <svg
+                    class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  datepicker
+                  datepicker-autohide
+                  id="date"
+                  name="date"
+                  type="text"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Select date"
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                for="time"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Time</label
+              >
+              <input
+                type="text"
+                id="time"
+                name="time"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+              />
+            </div>
+            <div>
+              <label
+                for="availability"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Availability</label
+              >
+              <select
+                id="availability"
+                name="availability"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option>Available</option>
+                <option>Not Available</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-6"></div>
+
+          <button
+            type="submit"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Create Availability
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function new_availability(consultantId, date, time, availability) {
+        fetch("http://localhost:8080/NewAvailability", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            consultantId,
+            date,
+            time,
+            availability,
+          }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              alert("successful!");
+            } else {
+              alert("failed!");
+            }
+          })
+          .catch((error) => {
+            alert("Error: " + error);
+          });
+      }
+    </script>
+
+    <script>
+      document.getElementById("consultantId").value =
+        sessionStorage.getItem("consultant_id");
+    </script>
+  </body>
+</html>

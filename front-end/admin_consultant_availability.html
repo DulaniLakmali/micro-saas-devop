@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/d45b3203c1.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+    />
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <title>Document</title>
+
+    <script>
+      $(function () {
+        $("#includeHtml").load("admin_navbar.html");
+      });
+    </script>
+    <script>
+      $(document).ready(function () {
+        $("#example").DataTable();
+      });
+    </script>
+
+    <script>
+      fetch("http://localhost:8080/Availability")
+        .then((response) => response.json())
+        .then((data) => {
+          const tableBody = document.querySelector("#example tbody");
+          data.forEach((element) => {
+            const row = document.createElement("tr");
+            const consultant_name = document.createElement("td");
+            const category = document.createElement("td");
+            const date = document.createElement("td");
+            const time = document.createElement("td");
+            const availability = document.createElement("td");
+            const action = document.createElement("td");
+
+            consultantId = element.consultantId;
+            fetch(`http://localhost:8080/Consultant/${consultantId}`)
+              .then((response1) => response1.json())
+              .then((data1) => {
+                consultant_name.textContent = data1.firstName;
+                category.textContent = data1.category;
+              });
+
+            date.textContent = element.date;
+            time.textContent = element.time;
+            availability.textContent = element.availability;
+
+            tableBody.appendChild(row);
+            row.appendChild(consultant_name);
+            row.appendChild(category);
+            row.appendChild(date);
+            row.appendChild(time);
+            row.appendChild(availability);
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
+    </script>
+  </head>
+  <body>
+    <div id="includeHtml"></div>
+
+    <div class="p-4 sm:ml-64">
+      <div
+        class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14"
+      >
+        <h5 class="text-xl font-bold dark:text-white">
+          Check Consultants Availability
+        </h5>
+        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
+        <table id="example" class="display" style="width: 100%">
+          <thead>
+            <tr>
+              <th>Consultant Name</th>
+              <th>Category</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Availability</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
