@@ -25,9 +25,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: front-end
 
       - name: Run tests
         run: npm test
+        working-directory: front-end
 
       - name: Upload test results (if any)
         if: always()
